@@ -1,23 +1,54 @@
-import logo from './logo.svg';
 import './App.css';
+import {useState} from 'react'
+import Title from "./components/title"
 
 function App() {
+  const [showContent, setShowContent] = useState(true)
+  const [events, setEvents] = useState([
+    {title: "akhror's birthday party", id: 1},
+    {title: "doniyor's live stream", id: 2},
+    {title: "match: manchester united vs barcelona", id: 3}
+  ])
+ 
+
+  const handleDelete = (id) => {
+    // const filteredEvents = events.filter((event) => {
+    //   return event.id !== id
+    // })
+    // setEvents(filteredEvents)
+
+
+    //ikkinchi usul // bundan foydalasnish maslahat berilmiydi 
+    // setEvents(events.filter((event) => {
+    //   return event.id !== id
+    // }))
+
+    //uchinchi usul
+      setEvents((prev) => {
+        return prev.filter((event) => {
+          return event.id !== id
+        })
+      })
+    
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Title title="Akhror Kingdom 👑" subtitle="Salom"/>
+      {showContent && <button onClick={() => setShowContent(false)}>Hide content</button>}
+      {!showContent && <button onClick={() => setShowContent(true)}>Show content</button>}
+
+      {showContent && <div>
+        {events.length == 0 && <h3>Not Content Yet ;(</h3>}
+        {events.map((event) => {
+        return (
+          <div key={event.id}>
+            <h2>{event.title}</h2>
+            <button onClick={() => handleDelete(event.id)}>delete</button>
+          </div>
+        )
+      })}
+      </div>}
     </div>
   );
 }
